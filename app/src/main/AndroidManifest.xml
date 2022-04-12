@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.connectionlesson_4_chat_app">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <application
+        android:name="com.utils.App"
+        android:allowBackup="true"
+        android:icon="@drawable/chat_icon"
+        android:label="@string/app_name"
+        android:roundIcon="@drawable/chat_icon"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.ConnectionLesson_4_Chat_App">
+        <activity
+            android:name="com.activities.SignInActivity"
+            android:exported="true">
+
+        </activity>
+        <activity
+            android:name="com.activities.Splash"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".MainActivity"
+            android:exported="true">
+
+        </activity>
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
+    </application>
+
+</manifest>
