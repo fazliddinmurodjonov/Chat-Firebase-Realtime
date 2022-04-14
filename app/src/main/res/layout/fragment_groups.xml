@@ -6,11 +6,11 @@
     tools:context="com.fragment.Groups">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/profilesRV"
-        android:overScrollMode="never"
+        android:id="@+id/groupsRV"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
+        android:overScrollMode="never"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -20,13 +20,14 @@
         tools:listitem="@layout/item_group" />
 
     <ImageButton
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:src="@drawable/add_group"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:id="@+id/addGroupBtn"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
         android:layout_margin="25dp"
-        app:layout_constraintBottom_toBottomOf="parent"
         android:background="@drawable/background_btn_add_gr"
+        android:src="@drawable/add_group"
         app:backgroundTint="@null"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         tools:ignore="MissingConstraints" />
 </androidx.constraintlayout.widget.ConstraintLayout>

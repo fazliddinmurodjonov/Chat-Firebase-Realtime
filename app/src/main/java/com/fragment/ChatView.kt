@@ -2,21 +2,16 @@ package com.fragment
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.widget.Toast
-import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.adapter.MessageAdapter
-import com.adapter.UserAdapter
 import com.example.connectionlesson_4_chat_app.R
 import com.example.connectionlesson_4_chat_app.databinding.FragmentChatViewBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
-import com.models.Message
+import com.models.Messages
 import com.models.User
 import com.squareup.picasso.Picasso
 import com.utils.Empty
@@ -28,12 +23,13 @@ class ChatView : Fragment(R.layout.fragment_chat_view) {
     lateinit var firebaseAuth: FirebaseAuth
     lateinit var firebaseDatabase: FirebaseDatabase
     lateinit var reference: DatabaseReference
+    var connectUser = true
     lateinit var referenceMessage: DatabaseReference
     lateinit var currentUser: FirebaseUser
     var onFragment = true
     lateinit var simpleDateFormat: SimpleDateFormat
     lateinit var date: String
-    lateinit var messageList: ArrayList<Message>
+    lateinit var messageList: ArrayList<Messages>
     lateinit var userUID: String
     lateinit var messageAdapter: MessageAdapter
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -57,10 +53,25 @@ class ChatView : Fragment(R.layout.fragment_chat_view) {
         })
         reference.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
+                if (connectUser) {
+                    val user = snapshot.getValue(User::class.java)
+                    Picasso.get().load(user?.photoUrl).into(binding.profileImg)
+                    binding.userName.text = user?.displayName
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+
+            }
+        })
+        reference.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
                 val user = snapshot.getValue(User::class.java)
-                Picasso.get().load(user?.photoUrl).into(binding.profileImg)
-                binding.userName.text = user?.displayName
-                binding.userState.text = user?.userState
+                if (connectUser) {
+                    binding.userState.text = user?.userState
+                }
+
+
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -76,7 +87,7 @@ class ChatView : Fragment(R.layout.fragment_chat_view) {
                     messageList.clear()
 
                     for (message in messages) {
-                        val m = message.getValue(Message::class.java)
+                        val m = message.getValue(Messages::class.java)
                         messageList.add(m!!)
                     }
                     var lastMessage = ""
@@ -107,7 +118,7 @@ class ChatView : Fragment(R.layout.fragment_chat_view) {
             if (messageEmpty && messageSpace && m.isNotEmpty()) {
                 val simpleDateFormat = SimpleDateFormat("dd.MM.yyyy HH:mm")
                 val date = simpleDateFormat.format(Date())
-                val message = Message(firebaseAuth.currentUser!!.uid, userUID, m, date)
+                val message = Messages(firebaseAuth.currentUser!!.uid, userUID, m, date)
                 val key = referenceMessage.push().key
                 referenceMessage.child("${firebaseAuth.currentUser!!.uid}/${userUID}/$key")
                     .setValue(message)
@@ -123,9 +134,16 @@ class ChatView : Fragment(R.layout.fragment_chat_view) {
         }
     }
 
+    override fun onStop() {
+        super.onStop()
+        onFragment = false
+        connectUser = false
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         onFragment = false
+        connectUser = false
     }
 
 }

@@ -5,56 +5,102 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
+import by.kirich1409.viewbindingdelegate.viewBinding
+import com.adapter.GroupAdapter
+import com.adapter.GroupMessageAdapter
 import com.example.connectionlesson_4_chat_app.R
+import com.example.connectionlesson_4_chat_app.databinding.FragmentGroupViewBinding
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.database.*
+import com.models.Group
+import com.models.GroupMessages
+import com.models.Messages
+import com.utils.Empty
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+class GroupView : Fragment(R.layout.fragment_group_view) {
+    private val binding: FragmentGroupViewBinding by viewBinding()
+    lateinit var groupMessageAdapter: GroupMessageAdapter
+    lateinit var groupMessagesList: ArrayList<GroupMessages>
+    lateinit var firebaseAuth: FirebaseAuth
+    lateinit var currentUser: FirebaseUser
+    lateinit var firebaseDatabase: FirebaseDatabase
+    lateinit var reference: DatabaseReference
+    lateinit var groupUnique: String
+    lateinit var referenceGroup: DatabaseReference
+    var onFragment = true
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        firebaseAuth = FirebaseAuth.getInstance()
+        firebaseDatabase = FirebaseDatabase.getInstance()
+        groupMessagesList = ArrayList()
+        currentUser = firebaseAuth.currentUser!!
 
-/**
- * A simple [Fragment] subclass.
- * Use the [GroupView.newInstance] factory method to
- * create an instance of this fragment.
- */
-class GroupView : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+        groupUnique = arguments?.getString("groupUnique")!!
+        reference = firebaseDatabase.getReference("GroupMessages").child(groupUnique)
+        referenceGroup = firebaseDatabase.getReference("Groups").child(groupUnique)
+        referenceGroup.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val group = snapshot.getValue(Group::class.java)
+                binding.groupName.text = group?.groupName
+            }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+            override fun onCancelled(error: DatabaseError) {
+            }
+
+        })
+
+        reference.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                groupMessagesList.clear()
+                val messages = snapshot.children
+                for (message in messages) {
+                    val messageValue = message.getValue(GroupMessages::class.java)
+                    groupMessagesList.add(messageValue!!)
+                }
+                groupMessageAdapter = GroupMessageAdapter(groupMessagesList, currentUser.uid)
+                if (onFragment) {
+                    binding.GroupMessagesRV.adapter = groupMessageAdapter
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+
+            }
+
+        })
+
+
+        binding.sendMessageBtn.setOnClickListener {
+            val m = binding.sendMessageEt.text.toString()
+            val messageEmpty = Empty.empty(m)
+            val messageSpace = Empty.space(m)
+            if (messageEmpty && messageSpace && m.isNotEmpty()) {
+                val simpleDateFormat = SimpleDateFormat("dd.MM.yyyy HH:mm")
+                val date = simpleDateFormat.format(Date())
+                val referenceUser =
+                    firebaseDatabase.getReference("Users").child("${currentUser.uid}")
+                val groupMessage = GroupMessages(currentUser.uid, groupUnique, m, date)
+                val key = referenceUser.push().key
+                reference.child(key!!).setValue(groupMessage)
+                binding.sendMessageEt.text.clear()
+            }
+        }
+        binding.backBtn.setOnClickListener {
+            findNavController().popBackStack()
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?,
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_group_view, container, false)
+    override fun onResume() {
+        super.onResume()
+        onFragment = true
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment GroupView.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            GroupView().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+    override fun onPause() {
+        super.onPause()
+        onFragment = false
     }
 }

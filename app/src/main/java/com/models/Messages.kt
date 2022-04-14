@@ -1,6 +1,6 @@
 package com.models
 
-class Message {
+class Messages {
     var fromUser: String? = null
     var toUser: String? = null
     var message: String? = null

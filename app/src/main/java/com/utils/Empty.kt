@@ -15,4 +15,5 @@ object Empty {
     fun space(text: String): Boolean {
         return text != " "
     }
+
 }

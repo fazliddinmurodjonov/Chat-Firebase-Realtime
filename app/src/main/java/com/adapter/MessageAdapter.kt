@@ -5,13 +5,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.connectionlesson_4_chat_app.databinding.ItemMessageFromUserBinding
 import com.example.connectionlesson_4_chat_app.databinding.ItemMessageToUserBinding
-import com.models.Message
+import com.models.Messages
 
-class MessageAdapter(var messageList: ArrayList<Message>, var uid: String) :
+class MessageAdapter(var messageList: ArrayList<Messages>, var uid: String) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     inner class FromVH(var binding: ItemMessageFromUserBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun onBind(message: Message) {
+        fun onBind(message: Messages) {
             binding.messageTv.text = message.message
             binding.dateTv.text = message.date
         }
@@ -19,7 +19,7 @@ class MessageAdapter(var messageList: ArrayList<Message>, var uid: String) :
 
     inner class ToVH(var binding: ItemMessageToUserBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun onBind(message: Message) {
+        fun onBind(message: Messages) {
             binding.messageTv.text = message.message
             binding.dateTv.text = message.date
         }

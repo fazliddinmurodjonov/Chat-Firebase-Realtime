@@ -19,6 +19,7 @@
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
             android:background="@drawable/background_btn_back"
             android:src="@drawable/back"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -31,9 +32,8 @@
             style="@style/TextStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-
             android:layout_marginStart="15dp"
-            android:text="Android Developers M1"
+            android:text="Android Developers"
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/backBtn"
@@ -41,12 +41,27 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/GroupMessagesRV"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:overScrollMode="never"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toTopOf="@id/sendMessageEt"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/UserActionBar"
+        app:stackFromEnd="true"
+        tools:ignore="MissingConstraints" />
+
     <EditText
         android:id="@+id/sendMessageEt"
         style="@style/TextStyle"
         android:layout_width="0dp"
         android:layout_height="60dp"
         android:layout_marginStart="15dp"
+        android:layout_marginTop="5dp"
         android:layout_marginBottom="15dp"
         android:background="@drawable/background_et"
         android:hint="Write a message..."
@@ -54,17 +69,18 @@
         android:paddingEnd="20dp"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/addMedia"
+        app:layout_constraintEnd_toStartOf="@id/sendMessageBtn"
         app:layout_constraintStart_toStartOf="parent"
         tools:ignore="MissingConstraints" />
 
-    <ImageView
-        android:id="@+id/addMedia"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
-        android:layout_marginStart="15dp"
-        android:layout_marginEnd="15dp"
-        android:layout_marginBottom="25dp"
+    <ImageButton
+        android:id="@+id/sendMessageBtn"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/background_btn_back"
         android:src="@drawable/send"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

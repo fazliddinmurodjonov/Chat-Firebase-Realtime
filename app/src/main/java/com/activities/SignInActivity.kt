@@ -33,6 +33,7 @@ class SignInActivity : AppCompatActivity(R.layout.activity_sign_in) {
     private val TAG = "MainActivity"
     lateinit var auth: FirebaseAuth
     lateinit var firebaseDatabase: FirebaseDatabase
+    var userGmail = ""
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -88,7 +89,7 @@ class SignInActivity : AppCompatActivity(R.layout.activity_sign_in) {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d(TAG, "signInWithCredential:success")
                     val currentUser = auth.currentUser
-//                        updateUI(user)
+
                     val user = User()
                     user.email = currentUser?.email
                     user.displayName = currentUser?.displayName
@@ -96,31 +97,40 @@ class SignInActivity : AppCompatActivity(R.layout.activity_sign_in) {
                     user.uid = currentUser?.uid
                     user.userState = "Online"
                     user.lastTime = ""
-                    user.lastMessage=""
+                    user.lastMessage = ""
+                    userGmail = currentUser!!.email!!
                     reference = firebaseDatabase.getReference("Users")
-                    reference.addListenerForSingleValueEvent(object : ValueEventListener {
+
+                    reference.addValueEventListener(object : ValueEventListener {
                         override fun onDataChange(snapshot: DataSnapshot) {
                             val users = snapshot.children
                             var userList = ArrayList<String>()
-                            for (user in users) {
-                                val userValue = user.getValue(User::class.java)
-                                userList.add(userValue?.uid!!)
+                            for (us in users) {
+                                val userValue = us.getValue(User::class.java)
+                                if (userValue!!.uid != null) {
+
+                                    userList.add(userValue.uid!!)
+                                }
                             }
-                            val contains = userList.contains(user.uid)
-                            if (!contains) {
+
+                            if (userList.size == 0) {
                                 reference.child(currentUser!!.uid).setValue(user)
+                            } else {
+                                val contains = userList.contains(user.uid)
+                                if (!contains) {
+                                    reference.child(currentUser!!.uid).setValue(user)
+                                }
                             }
+
+
                         }
 
                         override fun onCancelled(error: DatabaseError) {
                         }
 
                     })
-                    SharedPreference.init(this)
-                    SharedPreference.signUp = true
-                    val intent = Intent(this, MainActivity::class.java)
-                    startActivity(intent)
-                    finish()
+                    updateUI()
+
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.w(TAG, "signInWithCredential:failure", task.exception)
@@ -130,4 +140,12 @@ class SignInActivity : AppCompatActivity(R.layout.activity_sign_in) {
             }
     }
 
+    fun updateUI() {
+        SharedPreference.init(this)
+        SharedPreference.signUp = true
+        SharedPreference.userGmail = userGmail
+        val intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
+        finish()
+    }
 }

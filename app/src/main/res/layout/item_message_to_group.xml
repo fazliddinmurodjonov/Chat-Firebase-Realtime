@@ -6,22 +6,57 @@
     android:layout_height="wrap_content"
     android:background="@android:color/transparent">
 
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/profileImg"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginBottom="6dp"
+        android:src="@drawable/profile"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/messageLayout"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="MissingConstraints" />
+
+    <ImageView
+        android:id="@+id/userState"
+        android:layout_width="12dp"
+        android:layout_height="12dp"
+        android:visibility="invisible"
+        android:src="@drawable/onlinesign"
+        app:layout_constraintBottom_toBottomOf="@id/profileImg"
+        app:layout_constraintEnd_toEndOf="@id/profileImg"
+        tools:ignore="MissingConstraints" />
+
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/messageLayout"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
-        android:background="@drawable/background_message_from"
-        android:gravity="end|center_horizontal"
+        android:background="@drawable/background_message_to"
         android:paddingStart="20sp"
         android:paddingTop="10dp"
-        android:layout_marginEnd="20dp"
         android:paddingEnd="20dp"
         android:paddingBottom="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/profileImg"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints">
+
+        <TextView
+            android:id="@+id/userName"
+            style="@style/TextStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:text="Fazliddin Murodjonov"
+            android:textColor="@color/lightGray"
+
+            app:layout_constraintBottom_toTopOf="@id/messageTv"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/messageTv"
@@ -30,13 +65,13 @@
             android:layout_height="match_parent"
             android:layout_gravity="center_vertical"
             android:gravity="center_vertical"
-            android:justificationMode="inter_word"
             android:lineSpacingExtra="3dp"
             android:text=""
+            android:textColor="@color/white"
             app:layout_constraintBottom_toTopOf="@id/dateTv"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/userName" />
 
         <TextView
             android:id="@+id/dateTv"
@@ -45,11 +80,12 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:text="11.04.2022 08:30"
-            android:textColor="@color/gray"
+            android:textColor="@color/lightGray"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/messageTv" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -40,13 +40,16 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         date = simpleDateFormat.format(Date())
 
         reference = firebaseDatabase.getReference("Users")
-
         val connectedRef = Firebase.database.getReference(".info/connected")
+
         connectedRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val connected = snapshot.getValue(Boolean::class.java) ?: false
                 if (connected) {
                     reference.child(currentUser.uid).child("userState").setValue("Online")
+                } else {
+                    reference.child(currentUser.uid).child("userState").onDisconnect()
+                        .setValue("Offline")
                 }
             }
 
