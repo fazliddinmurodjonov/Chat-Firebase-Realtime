@@ -44,7 +44,7 @@ class Chats : Fragment(R.layout.fragment_chats) {
                     }
                 }
 
-                userAdapter = UserAdapter(userList)
+                userAdapter = UserAdapter(userList,currentUser.uid)
                 if (connect) {
                     binding.profilesRV.adapter = userAdapter
                 }
