@@ -13,7 +13,7 @@
   
   
 # Resources:
- 
-<a href = "https://lottiefiles.com/81963-chat-bubbles">LottieFiles</a>
+  
+ <b><a href = "https://lottiefiles.com/81963-chat-bubbles">LottieFiles</a><b>
 
-<a href = "https://www.figma.com/file/ZNCE5t78CytN8lT9Ybbsm0/Untitled?node-id=0%3A1">Figma</a>
+<b><a href = "https://www.figma.com/file/ZNCE5t78CytN8lT9Ybbsm0/Untitled?node-id=0%3A1">Figma</a><b>
