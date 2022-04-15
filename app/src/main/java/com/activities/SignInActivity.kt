@@ -108,7 +108,6 @@ class SignInActivity : AppCompatActivity(R.layout.activity_sign_in) {
                             for (us in users) {
                                 val userValue = us.getValue(User::class.java)
                                 if (userValue!!.uid != null) {
-
                                     userList.add(userValue.uid!!)
                                 }
                             }
