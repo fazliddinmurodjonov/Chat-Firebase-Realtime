@@ -7,7 +7,9 @@
 <img src="images/img_4.jpg" width = "270" > <img src="images/img_5.jpg" width = "270" > <img src="images/img_6.jpg" width = "270" >
 <img src="images/img_7.jpg" width = "270" > <img src="images/img_8.jpg" width = "270">
 
-# <h3>I made icon for this app.<h3>
+# Icons
+
+<h3>I made icon for this app.<h3>
   
   <img src="images/icon.png">
   
