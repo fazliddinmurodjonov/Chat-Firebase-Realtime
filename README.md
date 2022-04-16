@@ -1,4 +1,4 @@
-# Me Gramm Messanger
+# Me Gramm Messenger
 
 
 <img src="images/video.gif" width = "800" > 
