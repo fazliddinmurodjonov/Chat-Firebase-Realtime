@@ -107,7 +107,7 @@ class SignInActivity : AppCompatActivity(R.layout.activity_sign_in) {
                             var userList = ArrayList<String>()
                             for (us in users) {
                                 val userValue = us.getValue(User::class.java)
-                                if (userValue!!.uid != null) {
+                                if (userValue!!.uid != null && userValue.uid!!.isNotEmpty()) {
                                     userList.add(userValue.uid!!)
                                 }
                             }
@@ -142,7 +142,7 @@ class SignInActivity : AppCompatActivity(R.layout.activity_sign_in) {
     fun updateUI() {
         SharedPreference.init(this)
         SharedPreference.signUp = true
-        SharedPreference.userGmail = userGmail
+        SharedPreference.userExist = true
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
         finish()

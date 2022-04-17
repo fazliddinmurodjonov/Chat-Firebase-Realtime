@@ -22,9 +22,9 @@ object SharedPreference {
         set(value) = sharedPreference.edit {
             it.putBoolean("signUp", value!!)
         }
-    var userGmail: String?
-        get() = sharedPreference.getString("userGmail", "")
+    var userExist: Boolean?
+        get() = sharedPreference.getBoolean("userExist", false)
         set(value) = sharedPreference.edit {
-            it.putString("userGmail", value)
+            it.putBoolean("userExist", value!!)
         }
 }

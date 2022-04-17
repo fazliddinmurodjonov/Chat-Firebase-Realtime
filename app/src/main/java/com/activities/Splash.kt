@@ -24,33 +24,36 @@ class Splash : AppCompatActivity(R.layout.activity_splash) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         SharedPreference.init(this)
-        var containUser = false
+
         var userList = ArrayList<String>()
         firebaseDatabase = FirebaseDatabase.getInstance()
         reference = firebaseDatabase.getReference("Users")
-        reference.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                val users = snapshot.children
-                userList.clear()
-                for (user in users) {
-                    val userValue = user.getValue(User::class.java)
-                    if (userValue != null) {
-                        userList.add(userValue.email!!)
-                    }
-                }
-                containUser = userList.contains(SharedPreference.userGmail)
-            }
 
-            override fun onCancelled(error: DatabaseError) {
-            }
-
-        })
+//        if (!SharedPreference.userExist!!) {
+//            reference.addValueEventListener(object : ValueEventListener {
+//                override fun onDataChange(snapshot: DataSnapshot) {
+//                    val users = snapshot.children
+//                    userList.clear()
+//                    for (user in users) {
+//                        val userValue = user.getValue(User::class.java)
+//                        if (userValue != null) {
+//                            userList.add(userValue.email!!)
+//                        }
+//                    }
+//                    SharedPreference.userExist = userList.contains(SharedPreference.userGmail)
+//                }
+//
+//                override fun onCancelled(error: DatabaseError) {
+//                }
+//            })
+//        }
 
 
         val signUp = SharedPreference.signUp
+        val userExist = SharedPreference.userExist
         val handler = Handler(Looper.getMainLooper())
         handler.postDelayed({
-            if (signUp!! && containUser) {
+            if (signUp!! && userExist!!) {
                 val intent = Intent(this, MainActivity::class.java)
                 startActivity(intent)
                 finish()
