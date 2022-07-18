@@ -21,4 +21,4 @@
 <b><a href = "https://www.figma.com/file/ZNCE5t78CytN8lT9Ybbsm0/Untitled?node-id=0%3A1">Figma</a><b>
 
 # Update
-This application are added notifation each other users and groups.
+This application is added notifation each other users and groups.
